@@ -95,7 +95,6 @@ if st.session_state.question_index < len(questions):
                 if hint_input.strip() == answer:
                     st.success("정답입니다! 🎉 +3점")
                     st.session_state.score += 3
-                    play_correct_sound()
                 else:
                     st.error("아쉽습니다. 다음 문제로 넘어가요!")
                 st.session_state.answered = True
