@@ -62,9 +62,11 @@ if st.session_state.question_index < len(questions):
 
     st.markdown(f"### {emoji}")
 
-    if not st.session_state.answered:
-        user_input = st.text_input("정답을 입력하세요:", key=f"q_{st.session_state.question_index}")
-    
+    if not st.session_state.show_hint:
+        user_input = st.text_input(
+            "정답을 입력하세요:",
+            key=f"user_input_{st.session_state.question_index}"
+        )
         if not st.session_state.show_hint:
             col1, col2 = st.columns([1, 1])
             with col1:
@@ -72,7 +74,7 @@ if st.session_state.question_index < len(questions):
                     if user_input.strip() == answer:
                         st.success("정답입니다! 😊 +5점")
                         st.session_state.score += 5
-                        st.image("https://media4.giphy.com/media/.../giphy.gif", use_container_width=True)
+                        st.image("https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNnpybTl6eWJ3N2tkNTdmejd4dTc5dHBlMXZlc3RwOXk4eHh0eDBrYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pYkD8W72qnO97rOEh8/giphy.gif", use_container_width=True)
                         st.session_state.answered = True
             with col2:
                 if st.button("힌트 보기", key=f"hint_{st.session_state.question_index}"):
@@ -80,11 +82,13 @@ if st.session_state.question_index < len(questions):
                     st.session_state.hint_used = True
 
 
-
+    # 힌트 본 후 다시 입력창
     if st.session_state.show_hint and not st.session_state.answered:
         st.info("힌트: " + hint.get(emoji, "힌트 없음"))
-        hint_input = st.text_input("힌트를 보고 다시 정답을 입력하세요:", key=f"hint_{st.session_state.question_index}")
-    
+        hint_input = st.text_input(
+            "힌트를 보고 다시 정답을 입력하세요:",
+            key=f"hint_input_{st.session_state.question_index}"
+        )
         hint_col1, hint_col2 = st.columns([1, 1])
         with hint_col1:
             if st.button("정답 제출"):
