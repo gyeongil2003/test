@@ -56,7 +56,7 @@ if st.session_state.question_index < len(questions):
     if not st.session_state.answered:
         user_input = st.text_input("정답을 입력하세요:", key=f"q_{st.session_state.question_index}")
 
-        col1, col2 = st.columns([1, 1])
+        col1, col2, col3 = st.columns([1, 1, 1])
         with col1:
             if st.button("제출"):
                 if user_input.strip() == answer:
