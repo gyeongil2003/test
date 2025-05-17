@@ -41,19 +41,22 @@ def play_correct_sound():
     """
     components.html(sound_html, height=0)
 
-# 커스텀 버튼 색상 스타일 삽입
+submit = st.button("제출", key="submit_button")
+hint = st.button("힌트 보기", key="hint_button")
+
 st.markdown("""
     <style>
-    div.stButton > button:first-child {
-        background-color: #FF69B4;
-        color: white;
+    div[data-testid="stButton"] > button[kind="primary"] {
+        background-color: #FF69B4 !important;
+        color: white !important;
     }
-    div.stButton:nth-of-type(2) > button {
-        background-color: #4682B4;
-        color: white;
+    div[data-testid="stButton"]:nth-of-type(2) > button {
+        background-color: #4682B4 !important;
+        color: white !important;
     }
     </style>
 """, unsafe_allow_html=True)
+
 
 # 페이지 구성
 st.title("🎵 이모지로 노래 제목 맞추기 게임")
