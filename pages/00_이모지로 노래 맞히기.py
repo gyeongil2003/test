@@ -57,7 +57,7 @@ if st.session_state.question_index < len(questions):
     if not st.session_state.answered:
         user_input = st.text_input("정답을 입력하세요:", key=f"q_{st.session_state.question_index}")
 
-        col1, col2, col3 = st.columns([1, 1, 1])
+        col1, col2 = st.columns([1, 1])
         with col1:
             if st.button("제출"):
                 if user_input.strip() == answer:
@@ -72,23 +72,27 @@ if st.session_state.question_index < len(questions):
                 if st.button("힌트 보기"):
                     st.session_state.show_hint = True
                     st.session_state.hint_used = True
-        with col3:
-            if st.session_state.show_hint:
-                if st.button("패스"):
-                    st.warning(f"정답은 '{answer}'였습니다! 다음 문제로 넘어갑니다.")
-                    st.session_state.answered = True
+
 
     if st.session_state.show_hint and not st.session_state.answered:
-        st.info("힌트: " + hint.get(emoji, "힌트 없음"))
-        hint_input = st.text_input("힌트를 보고 다시 정답을 입력하세요:", key=f"hint_{st.session_state.question_index}")
+    st.info("힌트: " + hint.get(emoji, "힌트 없음"))
+    hint_input = st.text_input("힌트를 보고 다시 정답을 입력하세요:", key=f"hint_{st.session_state.question_index}")
+
+    hint_col1, hint_col2 = st.columns([1, 1])
+    with hint_col1:
         if st.button("힌트 정답 제출"):
             if hint_input.strip() == answer:
                 st.success("정답입니다! 🎉 +3점")
                 st.session_state.score += 3
-                st.toast("정답입니다! 🎉 축하합니다!")
+                play_correct_sound()
             else:
                 st.error("아쉽습니다. 다음 문제로 넘어가요!")
             st.session_state.answered = True
+    with hint_col2:
+        if st.button("패스"):
+            st.warning(f"정답은 '{answer}'였습니다! 다음 문제로 넘어갑니다.")
+            st.session_state.answered = True
+
 
     if st.session_state.answered:
         if st.button("다음 문제"):
