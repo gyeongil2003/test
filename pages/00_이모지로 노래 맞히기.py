@@ -51,7 +51,15 @@ questions = list(music.items())
 
 if st.session_state.question_index < len(questions):
     emoji, answer = questions[st.session_state.question_index]
-    st.subheader(f"문제 {st.session_state.question_index + 1} / {len(questions)}")
+    # 진행도 계산
+    current = st.session_state.question_index + 1
+    total = len(questions)
+    progress_ratio = current / total
+    
+    # 텍스트 + 진행바 함께 표시
+    st.subheader(f"문제 {current} / {total}")
+    st.progress(progress_ratio)
+
     st.markdown(f"### {emoji}")
 
     if not st.session_state.answered:
