@@ -88,7 +88,7 @@ if st.session_state.question_index < len(questions):
     
         hint_col1, hint_col2 = st.columns([1, 1])
         with hint_col1:
-            if st.button("정답 제출"):
+            if st.button("재도전!"):
                 if hint_input.strip() == answer:
                     st.success("정답입니다! 🎉 +3점")
                     st.session_state.score += 3
@@ -97,7 +97,7 @@ if st.session_state.question_index < len(questions):
                     st.error("아쉽습니다. 다음 문제로 넘어가요!")
                 st.session_state.answered = True
         with hint_col2:
-            if st.button("패스"):
+            if st.button("패스!"):
                 st.warning(f"정답은 '{answer}'였습니다! 다음 문제로 넘어갑니다.")
                 st.session_state.answered = True
 
