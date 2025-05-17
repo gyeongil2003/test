@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
 # 문제 데이터 정의
 music = {
@@ -31,6 +32,15 @@ hint = {
     '🍳💭💤': '난 차라리 흘러갈래'
 }
 
+# 효과음 재생용 함수 (정답 시)
+def play_correct_sound():
+    sound_html = """
+        <audio autoplay>
+            <source src="https://www.soundjay.com/buttons/sounds/button-10.mp3" type="audio/mpeg">
+        </audio>
+    """
+    components.html(sound_html, height=0)
+
 # 페이지 구성
 st.title("🎵 이모지로 노래 제목 맞추기 게임")
 st.markdown("한글과 숫자는 띄어쓰지 않고, 영어 제목은 모두 소문자로 입력해주세요!")
@@ -42,6 +52,7 @@ if "question_index" not in st.session_state:
     st.session_state.score = 0
     st.session_state.show_hint = False
     st.session_state.answered = False
+    st.session_state.hint_used = False
 
 questions = list(music.items())
 
@@ -57,28 +68,34 @@ if st.session_state.question_index < len(questions):
             if user_input.strip() == answer:
                 st.success("정답입니다! 😊 +5점")
                 st.session_state.score += 5
+                play_correct_sound()
                 st.session_state.answered = True
             else:
                 st.error("틀렸습니다! 😢")
-                st.session_state.show_hint = True
+
+    if not st.session_state.answered and not st.session_state.show_hint:
+        if st.button("힌트 보기"):
+            st.session_state.show_hint = True
+            st.session_state.hint_used = True
 
     if st.session_state.show_hint and not st.session_state.answered:
         st.info("힌트: " + hint.get(emoji, "힌트 없음"))
         hint_input = st.text_input("힌트를 보고 다시 정답을 입력하세요:", key=f"hint_{st.session_state.question_index}")
-        if st.button("힌트 제출"):
+        if st.button("힌트 정답 제출"):
             if hint_input.strip() == answer:
-                st.success("정답입니다! 🎉 +2점")
-                st.session_state.score += 2
-                st.session_state.answered = True
+                st.success("정답입니다! 🎉 +3점")
+                st.session_state.score += 3
+                play_correct_sound()
             else:
                 st.error("아쉽습니다. 다음 문제로 넘어가요!")
-                st.session_state.answered = True
+            st.session_state.answered = True
 
     if st.session_state.answered:
         if st.button("다음 문제"):
             st.session_state.question_index += 1
             st.session_state.answered = False
             st.session_state.show_hint = False
+            st.session_state.hint_used = False
             st.rerun()
 
 else:
