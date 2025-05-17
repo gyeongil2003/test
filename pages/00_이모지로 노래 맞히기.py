@@ -73,9 +73,10 @@ if st.session_state.question_index < len(questions):
                     st.session_state.show_hint = True
                     st.session_state.hint_used = True
         with col3:
-            if st.button("패스"):
-                st.warning(f"정답은 '{answer}'였습니다! 다음 문제로 넘어갑니다.")
-                st.session_state.answered = True
+            if st.session_state.show_hint:
+                if st.button("패스"):
+                    st.warning(f"정답은 '{answer}'였습니다! 다음 문제로 넘어갑니다.")
+                    st.session_state.answered = True
 
     if st.session_state.show_hint and not st.session_state.answered:
         st.info("힌트: " + hint.get(emoji, "힌트 없음"))
