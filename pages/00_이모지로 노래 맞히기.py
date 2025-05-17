@@ -32,15 +32,6 @@ hint = {
     '🍳💭💤': '난 차라리 흘러갈래'
 }
 
-# 효과음 재생용 함수 (정답 시)
-def play_correct_sound():
-    sound_html = """
-        <audio autoplay>
-            <source src="https://www.soundjay.com/buttons/sounds/button-10.mp3" type="audio/mpeg">
-        </audio>
-    """
-    components.html(sound_html, height=0)
-
 
 # 페이지 구성
 st.title("🎵 이모지로 노래 제목 맞추기 게임")
@@ -71,7 +62,7 @@ if st.session_state.question_index < len(questions):
                 if user_input.strip() == answer:
                     st.success("정답입니다! 😊 +5점")
                     st.session_state.score += 5
-                    play_correct_sound()
+                    st.image("https://media.giphy.com/media/111ebonMs90YLu/giphy.gif", caption="축하합니다!", use_column_width=True)
                     st.session_state.answered = True
                 else:
                     st.error("틀렸습니다! 😢")
