@@ -41,6 +41,20 @@ def play_correct_sound():
     """
     components.html(sound_html, height=0)
 
+# 커스텀 버튼 색상 스타일 삽입
+st.markdown("""
+    <style>
+    div.stButton > button:first-child {
+        background-color: #FF69B4;
+        color: white;
+    }
+    div.stButton:nth-of-type(2) > button {
+        background-color: #4682B4;
+        color: white;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # 페이지 구성
 st.title("🎵 이모지로 노래 제목 맞추기 게임")
 st.markdown("한글과 숫자는 띄어쓰지 않고, 영어 제목은 모두 소문자로 입력해주세요!")
@@ -64,19 +78,21 @@ if st.session_state.question_index < len(questions):
     if not st.session_state.answered:
         user_input = st.text_input("정답을 입력하세요:", key=f"q_{st.session_state.question_index}")
 
-        if st.button("제출"):
-            if user_input.strip() == answer:
-                st.success("정답입니다! 😊 +5점")
-                st.session_state.score += 5
-                play_correct_sound()
-                st.session_state.answered = True
-            else:
-                st.error("틀렸습니다! 😢")
-
-    if not st.session_state.answered and not st.session_state.show_hint:
-        if st.button("힌트 보기"):
-            st.session_state.show_hint = True
-            st.session_state.hint_used = True
+        col1, col2 = st.columns([1, 1])
+        with col1:
+            if st.button("제출"):
+                if user_input.strip() == answer:
+                    st.success("정답입니다! 😊 +5점")
+                    st.session_state.score += 5
+                    play_correct_sound()
+                    st.session_state.answered = True
+                else:
+                    st.error("틀렸습니다! 😢")
+        with col2:
+            if not st.session_state.show_hint:
+                if st.button("힌트 보기"):
+                    st.session_state.show_hint = True
+                    st.session_state.hint_used = True
 
     if st.session_state.show_hint and not st.session_state.answered:
         st.info("힌트: " + hint.get(emoji, "힌트 없음"))
