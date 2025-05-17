@@ -64,22 +64,21 @@ if st.session_state.question_index < len(questions):
 
     if not st.session_state.answered:
         user_input = st.text_input("정답을 입력하세요:", key=f"q_{st.session_state.question_index}")
-
-        col1, col2 = st.columns([1, 1])
-        with col1:
-            if st.button("제출"):
-                if user_input.strip() == answer:
-                    st.success("정답입니다! 😊 +5점")
-                    st.session_state.score += 5
-                    st.image("https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNnpybTl6eWJ3N2tkNTdmejd4dTc5dHBlMXZlc3RwOXk4eHh0eDBrYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pYkD8W72qnO97rOEh8/giphy.gif", use_container_width=True)
-                    st.session_state.answered = True
-                else:
-                    st.error("틀렸습니다! 😢")
-        with col2:
-            if not st.session_state.show_hint:
-                if st.button("힌트 보기"):
+    
+        if not st.session_state.show_hint:
+            col1, col2 = st.columns([1, 1])
+            with col1:
+                if st.button("제출", key=f"submit_{st.session_state.question_index}"):
+                    if user_input.strip() == answer:
+                        st.success("정답입니다! 😊 +5점")
+                        st.session_state.score += 5
+                        st.image("https://media4.giphy.com/media/.../giphy.gif", use_container_width=True)
+                        st.session_state.answered = True
+            with col2:
+                if st.button("힌트 보기", key=f"hint_{st.session_state.question_index}"):
                     st.session_state.show_hint = True
                     st.session_state.hint_used = True
+
 
 
     if st.session_state.show_hint and not st.session_state.answered:
@@ -101,6 +100,15 @@ if st.session_state.question_index < len(questions):
                 st.warning(f"정답은 '{answer}'였습니다! 다음 문제로 넘어갑니다.")
                 st.session_state.answered = True
 
+    # 정답 맞혔거나 패스한 경우
+    if st.session_state.answered:
+        st.markdown("---")
+        if st.button("다음 문제"):
+            st.session_state.question_index += 1
+            st.session_state.answered = False
+            st.session_state.show_hint = False
+            st.session_state.hint_used = False
+            st.rerun()
 
 else:
     st.subheader(f"🎉 게임 종료! 총 점수: {st.session_state.score}점")
