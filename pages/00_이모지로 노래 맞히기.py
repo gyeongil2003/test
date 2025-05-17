@@ -94,7 +94,7 @@ if st.session_state.question_index < len(questions):
 
 else:
     st.subheader(f"🎉 게임 종료! 총 점수: {st.session_state.score}점")
-    if st.session_state.score == 60:
+    if st.session_state.score >= 60:
         st.success("kpop 고인물이군요!")
     elif 50 <= st.session_state.score <= 59:
         st.info("아쉽군요! 조금만 있으면 당신은 kpop 고수!")
