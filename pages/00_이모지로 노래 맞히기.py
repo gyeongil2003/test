@@ -62,7 +62,7 @@ if st.session_state.question_index < len(questions):
                 if user_input.strip() == answer:
                     st.success("정답입니다! 😊 +5점")
                     st.session_state.score += 5
-                    st.image("https://media.giphy.com/media/111ebonMs90YLu/giphy.gif", caption="축하합니다!", use_column_width=True)
+                    st.image("https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNnpybTl6eWJ3N2tkNTdmejd4dTc5dHBlMXZlc3RwOXk4eHh0eDBrYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pYkD8W72qnO97rOEh8/giphy.gif", use_container_width=True)
                     st.session_state.answered = True
                 else:
                     st.error("틀렸습니다! 😢")
