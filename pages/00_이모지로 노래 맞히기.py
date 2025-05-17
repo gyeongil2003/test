@@ -92,24 +92,7 @@ if st.session_state.question_index < len(questions):
             if st.button("패스"):
                 st.warning(f"정답은 '{answer}'였습니다! 다음 문제로 넘어갑니다.")
                 st.session_state.answered = True
-        # 버튼 스타일 적용
-        st.markdown("""
-        <style>
-        div.stButton:nth-of-type(2) button {
-            background-color: #e74c3c !important;
-            color: white !important;
-            font-weight: bold;
-        }
-        </style>
-        """, unsafe_allow_html=True)
 
-    if st.session_state.answered:
-        if st.button("다음 문제"):
-            st.session_state.question_index += 1
-            st.session_state.answered = False
-            st.session_state.show_hint = False
-            st.session_state.hint_used = False
-            st.rerun()
 
 else:
     st.subheader(f"🎉 게임 종료! 총 점수: {st.session_state.score}점")
