@@ -80,7 +80,7 @@ if st.session_state.question_index < len(questions):
     
         hint_col1, hint_col2 = st.columns([1, 1])
         with hint_col1:
-            if st.button("힌트 정답 제출"):
+            if st.button("정답 제출"):
                 if hint_input.strip() == answer:
                     st.success("정답입니다! 🎉 +3점")
                     st.session_state.score += 3
