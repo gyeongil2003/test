@@ -96,6 +96,7 @@ else:
     st.subheader(f"🎉 게임 종료! 총 점수: {st.session_state.score}점")
     if st.session_state.score >= 60:
         st.success("kpop 고인물이군요!")
+        st.image("https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGp6dXc3N2FtdG9kcmVuOHd1MDZraGsyczRncGF5NjdybzM1MHY3ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/fxsqOYnIMEefC/giphy.gif", use_container_width=True)
     elif 50 <= st.session_state.score <= 59:
         st.info("아쉽군요! 조금만 있으면 당신은 kpop 고수!")
     elif 40 <= st.session_state.score <= 49:
