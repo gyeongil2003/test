@@ -59,7 +59,7 @@ if st.session_state.question_index < len(questions):
 
         col1, col2 = st.columns([1, 1])
         with col1:
-            if st.button("제출"):
+            if st.button("정답 제출"):
                 if user_input.strip() == answer:
                     st.success("정답입니다! 😊 +5점")
                     st.session_state.score += 5
@@ -92,7 +92,16 @@ if st.session_state.question_index < len(questions):
             if st.button("패스"):
                 st.warning(f"정답은 '{answer}'였습니다! 다음 문제로 넘어갑니다.")
                 st.session_state.answered = True
-
+        # 버튼 스타일 적용
+        st.markdown("""
+        <style>
+        div.stButton:nth-of-type(2) button {
+            background-color: #e74c3c !important;
+            color: white !important;
+            font-weight: bold;
+        }
+        </style>
+        """, unsafe_allow_html=True)
 
     if st.session_state.answered:
         if st.button("다음 문제"):
