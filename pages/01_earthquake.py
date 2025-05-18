@@ -49,7 +49,8 @@ if st.button("지진 정보 불러오기"):
         st.dataframe(df.style.set_properties(**{'text-align': 'center'}), use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-        # 지도 시각화
+    # 지도 시각화
+    with st.spinner("🌐 지도를 불러오는 중입니다..."):
         st.pydeck_chart(pdk.Deck(
             map_style='mapbox://styles/mapbox/light-v9',
             initial_view_state=pdk.ViewState(
@@ -80,16 +81,22 @@ if st.button("지진 정보 불러오기"):
 
         # 대륙 구분 (간단한 위경도 기준)
         def estimate_continent(lat, lon):
-            if -60 <= lat <= 80:
+            if -90 <= lat <= 85:
                 if -170 <= lon <= -30:
-                    return "북아메리카"
-                elif -30 < lon <= 60:
-                    return "유럽/아프리카"
-                elif 60 < lon <= 180:
-                    return "아시아/오세아니아"
-            if -80 <= lat < -60:
-                return "남극"
+                    if lat < 15:
+                        return "남아메리카"
+                    else:
+                        return "북아메리카"
+                elif -30 < lon <= 50:
+                    return "유럽"
+                elif -30 < lon <= 60 and lat < 15:
+                    return "아프리카"
+                elif 60 < lon <= 150 and lat > 0:
+                    return "아시아"
+                elif 110 < lon <= 180 and lat < 0:
+                    return "오세아니아"
             return "기타"
+
 
         df['대륙'] = df.apply(lambda row: estimate_continent(row['위도'], row['경도']), axis=1)
 
