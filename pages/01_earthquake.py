@@ -130,7 +130,6 @@ if "earthquake_df" in st.session_state:
             x=alt.X('규모구간:N', title="규모 구간"),
             y=alt.Y('count():Q', title="지진 건수"),
             color=alt.Color('규모구간:N', legend=None),  # 🎯 색깔은 유지하되, 범례/툴팁 생략
-            tooltip=[alt.Tooltip('count():Q', title='건수')]  # 🎯 필요한 툴팁만 명시
         ).properties(width=600, height=400)
         st.altair_chart(chart, use_container_width=True)
 
