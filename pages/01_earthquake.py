@@ -83,30 +83,30 @@ if st.button("지진 정보 불러오기"):
             }
         ))
 
-    # 3. 대륙별 그래프는 버튼을 눌렀을 때만 출력
-    if "earthquake_df" in st.session_state and st.button("대륙별 지진 발생 확인하기"):
-        df = st.session_state["earthquake_df"]
-        def estimate_continent(lat, lon):
-            if -90 <= lat <= 85:
-                if -170 <= lon <= -30:
-                    return "남아메리카" if lat < 15 else "북아메리카"
-                elif -30 < lon <= 50:
-                    return "유럽"
-                elif -30 < lon <= 60 and lat < 15:
-                    return "아프리카"
-                elif 60 < lon <= 150 and lat > 0:
-                    return "아시아"
-                elif 110 < lon <= 180 and lat < 0:
-                    return "오세아니아"
-            return "기타"
-    
-        df["대륙"] = df.apply(lambda row: estimate_continent(row["위도"], row["경도"]), axis=1)
-    
-        st.markdown("---")
-        st.markdown("### 🌎 대륙별 지진 발생 건수")
-        chart = alt.Chart(df).mark_bar().encode(
-            x=alt.X('대륙:N', title="대륙"),
-            y=alt.Y('count():Q', title="지진 건수"),
-            color='대륙:N'
-        ).properties(width=600, height=400)
-        st.altair_chart(chart, use_container_width=True)
+# 3. 대륙별 그래프는 버튼을 눌렀을 때만 출력
+if "earthquake_df" in st.session_state and st.button("대륙별 지진 발생 확인하기"):
+    df = st.session_state["earthquake_df"]
+    def estimate_continent(lat, lon):
+        if -90 <= lat <= 85:
+            if -170 <= lon <= -30:
+                return "남아메리카" if lat < 15 else "북아메리카"
+            elif -30 < lon <= 50:
+                return "유럽"
+            elif -30 < lon <= 60 and lat < 15:
+                return "아프리카"
+            elif 60 < lon <= 150 and lat > 0:
+                return "아시아"
+            elif 110 < lon <= 180 and lat < 0:
+                return "오세아니아"
+        return "기타"
+
+    df["대륙"] = df.apply(lambda row: estimate_continent(row["위도"], row["경도"]), axis=1)
+
+    st.markdown("---")
+    st.markdown("### 🌎 대륙별 지진 발생 건수")
+    chart = alt.Chart(df).mark_bar().encode(
+        x=alt.X('대륙:N', title="대륙"),
+        y=alt.Y('count():Q', title="지진 건수"),
+        color='대륙:N'
+    ).properties(width=600, height=400)
+    st.altair_chart(chart, use_container_width=True)
