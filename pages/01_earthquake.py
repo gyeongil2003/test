@@ -19,8 +19,8 @@ if st.button("지진 정보 불러오기"):
     if start_date > end_date:
         st.error("⛔ 시작일은 종료일보다 앞서야 합니다.")
         st.stop()
-    if (end_date - start_date).days > 30:
-        st.warning("⚠️ 너무 긴 기간을 조회하면 실패할 수 있습니다. 2개월 미만으로 설정해주세요.")
+    if (end_date - start_date).days > 60:
+        st.warning("⚠️ 긴 기간을 조회하면 실패할 수 있습니다. 2개월 미만으로 설정해주세요.")
         
     with st.spinner("🌐 데이터를 불러오는 중입니다..."):
         url = (
