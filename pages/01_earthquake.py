@@ -128,8 +128,7 @@ if "earthquake_df" in st.session_state:
         st.markdown("### 📈 규모별 지진 발생 건수")
         chart = alt.Chart(df).mark_bar().encode(
             x=alt.X('규모구간:N', title="규모 구간"),
-            y=alt.Y('count():Q', title="지진 건수"),
-            color='규모구간:N'
+            y=alt.Y('count():Q', title="지진 건수")
         ).properties(width=600, height=400)
         st.altair_chart(chart, use_container_width=True)
 
