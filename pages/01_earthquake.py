@@ -84,7 +84,8 @@ if st.button("지진 정보 불러오기"):
             ))
 
     # 3. 대륙별 그래프는 버튼을 눌렀을 때만 출력
-    if st.button("대륙별 지진 발생 확인하기"):
+    if "earthquake_df" in st.session_state and st.button("대륙별 지진 발생 확인하기"):
+        df = st.session_state["earthquake_df"]
         def estimate_continent(lat, lon):
             if -90 <= lat <= 85:
                 if -170 <= lon <= -30:
