@@ -16,14 +16,22 @@ end_date = st.date_input("조회 종료일", today)
 
 # 데이터 요청
 if st.button("지진 정보 불러오기"):
-    with st.spinner("🌐 지도를 불러오는 중입니다..."):
-        url = (
-            f"https://earthquake.usgs.gov/fdsnws/event/1/query"
-            f"?format=geojson&starttime={start_date}&endtime={end_date}"
-        )
-        res = requests.get(url)
-        data = res.json()
+       with st.spinner("🌐 데이터를 불러오는 중입니다..."):
+        url = f"..."
     
+        res = requests.get(url)
+    
+        if res.status_code != 200:
+            st.error(f"요청 실패 (상태 코드 {res.status_code})")
+            st.stop()
+    
+        try:
+            data = res.json()
+        except ValueError:
+            st.error("⚠️ 응답이 JSON 형식이 아닙니다.")
+            st.text(res.text)
+            st.stop()
+        
         if "features" not in data or len(data["features"]) == 0:
             st.warning("선택한 기간 동안 지진 데이터가 없습니다.")
         else:
