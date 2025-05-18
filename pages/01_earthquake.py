@@ -133,3 +133,5 @@ if "earthquake_df" in st.session_state:
         ).properties(width=600, height=400)
         st.altair_chart(chart, use_container_width=True)
 
+        st.write("NaN이 된 규모 데이터:", df[df["규모구간"].isna()])
+
