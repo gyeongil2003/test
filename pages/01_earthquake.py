@@ -84,29 +84,52 @@ if "earthquake_df" in st.session_state:
     ))
 
 # 3. 대륙별 그래프는 버튼을 눌렀을 때만 출력
-if "earthquake_df" in st.session_state and st.button("대륙별 지진 발생 확인하기"):
-    df = st.session_state["earthquake_df"]
-    def estimate_continent(lat, lon):
-        if -90 <= lat <= 85:
-            if -170 <= lon <= -30:
-                return "남아메리카" if lat < 15 else "북아메리카"
-            elif -30 < lon <= 50:
-                return "유럽"
-            elif -30 < lon <= 60 and lat < 15:
-                return "아프리카"
-            elif 60 < lon <= 150 and lat > 0:
-                return "아시아"
-            elif 110 < lon <= 180 and lat < 0:
-                return "오세아니아"
-        return "기타"
+if "earthquake_df" in st.session_state:
+    # 2개의 버튼 가로 배치
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        show_by_continent = st.button("대륙별 지진 발생 확인하기")
+    
+    with col2:
+        show_by_magnitude = st.button("규모별 지진 발생 확인하기")
 
-    df["대륙"] = df.apply(lambda row: estimate_continent(row["위도"], row["경도"]), axis=1)
+    if show_by_continent:
+        def estimate_continent(lat, lon):
+            if -90 <= lat <= 85:
+                if -170 <= lon <= -30:
+                    return "남아메리카" if lat < 15 else "북아메리카"
+                elif -30 < lon <= 50:
+                    return "유럽"
+                elif -30 < lon <= 60 and lat < 15:
+                    return "아프리카"
+                elif 60 < lon <= 150 and lat > 0:
+                    return "아시아"
+                elif 110 < lon <= 180 and lat < 0:
+                    return "오세아니아"
+            return "기타"
+    
+        df["대륙"] = df.apply(lambda row: estimate_continent(row["위도"], row["경도"]), axis=1)
+    
+        st.markdown("---")
+        st.markdown("### 🌎 대륙별 지진 발생 건수")
+        chart = alt.Chart(df).mark_bar().encode(
+            x=alt.X('대륙:N', title="대륙"),
+            y=alt.Y('count():Q', title="지진 건수"),
+            color='대륙:N'
+        ).properties(width=600, height=400)
+        st.altair_chart(chart, use_container_width=True)
+    if show_by_magnitude:
+    # 규모 구간 생성 (0~1, 1~2, ..., 6이상)
+        bins = [0, 1, 2, 3, 4, 5, 6, 10]
+        labels = ['0~1', '1~2', '2~3', '3~4', '4~5', '5~6', '6+']
+        df["규모구간"] = pd.cut(df["규모"], bins=bins, labels=labels, right=False)
+    
+        st.markdown("### 📈 규모별 지진 발생 건수")
+        chart = alt.Chart(df).mark_bar().encode(
+            x=alt.X('규모구간:N', title="규모 구간"),
+            y=alt.Y('count():Q', title="지진 건수"),
+            color='규모구간:N'
+        ).properties(width=600, height=400)
+        st.altair_chart(chart, use_container_width=True)
 
-    st.markdown("---")
-    st.markdown("### 🌎 대륙별 지진 발생 건수")
-    chart = alt.Chart(df).mark_bar().encode(
-        x=alt.X('대륙:N', title="대륙"),
-        y=alt.Y('count():Q', title="지진 건수"),
-        color='대륙:N'
-    ).properties(width=600, height=400)
-    st.altair_chart(chart, use_container_width=True)
