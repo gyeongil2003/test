@@ -64,7 +64,7 @@ if "earthquake_df" in st.session_state:
     st.dataframe(df.style.set_properties(**{'text-align': 'center'}), use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
    # 🔹 1. 규모 슬라이더 추가
-    min_mag = st.slider("지도에 표시할 최소 규모", min_value=0.0, max_value=10.0, value=0.0, step=0.1)
+    min_mag = st.slider("🔎지도에 표시할 최소 규모 설정", min_value=0.0, max_value=10.0, value=0.0, step=0.1)
     
     # 🔹 2. 필터링된 데이터프레임 생성
     df_map = df.dropna(subset=["위도", "경도", "규모"])
@@ -80,7 +80,7 @@ if "earthquake_df" in st.session_state:
                 data=df_map,
                 get_position='[경도, 위도]',
                 get_color='[255, 0, 0, 160]',
-                get_radius='규모 * 10000',
+                get_radius='규모 * 30000',
                 pickable=True,
             ),
         ],
