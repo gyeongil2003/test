@@ -101,6 +101,7 @@ if st.button("지진 정보 불러오기"):
         df['대륙'] = df.apply(lambda row: estimate_continent(row['위도'], row['경도']), axis=1)
 
         # 대륙별 빈도 그래프
+        st.markdown("---")
         st.markdown("### 🌎 대륙별 지진 발생 건수")
         chart = alt.Chart(df).mark_bar().encode(
             x=alt.X('대륙:N', title="대륙"),
