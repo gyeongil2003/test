@@ -133,7 +133,7 @@ if "earthquake_df" in st.session_state:
             color='대륙:N'
         ).properties(width=600, height=400)
         st.altair_chart(chart, use_container_width=True)
-        st.write("🌍 '기타'로 분류된 지진 데이터")
+        st.write("'기타'로 분류된 지진 데이터: ")
         st.dataframe(df[df["대륙"] == "기타"][["장소", "위도", "경도", "규모", "시간"]])
     if show_by_magnitude:
     # 규모 구간 생성 (0~1, 1~2, ..., 6이상)
