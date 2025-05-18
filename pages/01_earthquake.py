@@ -77,6 +77,7 @@ if "earthquake_df" in st.session_state:
     df_map = df_map[df_map["규모"] >= min_mag]
     
     # 🔹 3. 지도 출력 (df_map 사용)
+    st.write(df_map["규모"].dtype)
     st.pydeck_chart(pdk.Deck(
         map_style='mapbox://styles/mapbox/light-v9',
         initial_view_state=pdk.ViewState(latitude=0, longitude=0, zoom=1.2),
