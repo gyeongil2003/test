@@ -17,7 +17,10 @@ end_date = st.date_input("조회 종료일", today)
 # 데이터 요청
 if st.button("지진 정보 불러오기"):
        with st.spinner("🌐 데이터를 불러오는 중입니다..."):
-        url = f"..."
+        url = (
+    f"https://earthquake.usgs.gov/fdsnws/event/1/query"
+    f"?format=geojson&starttime={start_date}&endtime={end_date}"
+)
     
         res = requests.get(url)
     
