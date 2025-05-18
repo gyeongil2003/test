@@ -86,7 +86,7 @@ if "earthquake_df" in st.session_state:
                 data=df_map,
                 get_position='[경도, 위도]',
                 get_color='[255, 0, 0, 160]',
-                get_radius='규모 * 3000', #규모에 비례해서 원의 크기 
+                get_radius='규모 * 20000', #규모에 비례해서 원의 크기 
                 pickable=True,
             ),
         ],
