@@ -48,40 +48,40 @@ if st.button("지진 정보 불러오기"):
             st.session_state["earthquake_df"] = df  # 👉 저장
             st.success(f"✅ 총 {len(df)}건의 지진 발생")
             st.metric("📊 평균 규모", round(df['규모'].mean(), 2))
-        # 2. 지진 데이터가 존재할 때 항상 표 + 지도 출력
-        if "earthquake_df" in st.session_state:
-            df = st.session_state["earthquake_df"]
-        
-            # 📋 지진 발생 정보 표 (가운데 정렬 유지)
-            st.markdown("""
-            <style>
-            .centered-table td, .centered-table th {
-                text-align: center !important;
+    # 2. 지진 데이터가 존재할 때 항상 표 + 지도 출력
+    if "earthquake_df" in st.session_state:
+        df = st.session_state["earthquake_df"]
+    
+        # 📋 지진 발생 정보 표 (가운데 정렬 유지)
+        st.markdown("""
+        <style>
+        .centered-table td, .centered-table th {
+            text-align: center !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        st.markdown('<div class="centered-table">', unsafe_allow_html=True)
+        st.dataframe(df.style.set_properties(**{'text-align': 'center'}), use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+        # 지도만 먼저 표시
+        st.pydeck_chart(pdk.Deck(
+            map_style='mapbox://styles/mapbox/light-v9',
+            initial_view_state=pdk.ViewState(latitude=0, longitude=0, zoom=1.2),
+            layers=[
+                pdk.Layer(
+                    "ScatterplotLayer",
+                    data=df,
+                    get_position='[경도, 위도]',
+                    get_color='[255, 0, 0, 160]',
+                    get_radius='규모 * 10000',
+                    pickable=True,
+                ),
+            ],
+            tooltip={
+                "html": "<b>📍 장소:</b> {장소}<br><b>📈 규모:</b> {규모}<br><b>🕒 시간:</b> {시간}",
+                "style": {"backgroundColor": "white", "color": "black", "fontSize": "14px"}
             }
-            </style>
-            """, unsafe_allow_html=True)
-            st.markdown('<div class="centered-table">', unsafe_allow_html=True)
-            st.dataframe(df.style.set_properties(**{'text-align': 'center'}), use_container_width=True)
-            st.markdown('</div>', unsafe_allow_html=True)
-            # 지도만 먼저 표시
-            st.pydeck_chart(pdk.Deck(
-                map_style='mapbox://styles/mapbox/light-v9',
-                initial_view_state=pdk.ViewState(latitude=0, longitude=0, zoom=1.2),
-                layers=[
-                    pdk.Layer(
-                        "ScatterplotLayer",
-                        data=df,
-                        get_position='[경도, 위도]',
-                        get_color='[255, 0, 0, 160]',
-                        get_radius='규모 * 10000',
-                        pickable=True,
-                    ),
-                ],
-                tooltip={
-                    "html": "<b>📍 장소:</b> {장소}<br><b>📈 규모:</b> {규모}<br><b>🕒 시간:</b> {시간}",
-                    "style": {"backgroundColor": "white", "color": "black", "fontSize": "14px"}
-                }
-            ))
+        ))
 
     # 3. 대륙별 그래프는 버튼을 눌렀을 때만 출력
     if "earthquake_df" in st.session_state and st.button("대륙별 지진 발생 확인하기"):
@@ -99,9 +99,9 @@ if st.button("지진 정보 불러오기"):
                 elif 110 < lon <= 180 and lat < 0:
                     return "오세아니아"
             return "기타"
-
+    
         df["대륙"] = df.apply(lambda row: estimate_continent(row["위도"], row["경도"]), axis=1)
-
+    
         st.markdown("---")
         st.markdown("### 🌎 대륙별 지진 발생 건수")
         chart = alt.Chart(df).mark_bar().encode(
